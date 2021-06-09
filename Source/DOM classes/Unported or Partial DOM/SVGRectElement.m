@@ -100,8 +100,15 @@ void CGPathAddRoundedRect (CGMutablePathRef path, CGRect rect, CGFloat radiusX, 
 	
 	CGFloat radiusXPixels = _rx != nil ? [_rx pixelsValue] : 0;
 	CGFloat radiusYPixels = _ry != nil ? [_ry pixelsValue] : 0;
-	
-	if( radiusXPixels == 0 && radiusYPixels == 0 )
+    
+    if( [[self getAttribute:@"fill"] length] == 0 ) {
+        NSError *error = [NSError errorWithDomain:@"SVGKit" code:1 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                             [NSString stringWithFormat:@"rect should have fill specified even if it's none"], NSLocalizedDescriptionKey,
+                                                                             nil]];
+        [parseResult addParseErrorRecoverable:error];
+        CGPathAddRect(path, NULL, CGRectZero);
+    }
+    else if( radiusXPixels == 0 && radiusYPixels == 0 )
 	{
 		CGPathAddRect(path, NULL, rect);
 	}
