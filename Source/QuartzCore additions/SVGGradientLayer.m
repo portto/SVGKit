@@ -163,7 +163,6 @@
             CGRect rect = CGRectMake(startPoint.x, startPoint.y, rad, rad);
             rect = CGRectApplyAffineTransform(rect, selfTransform);
             rect = CGRectApplyAffineTransform(rect, absoluteTransform);
-            radius = CGRectGetHeight(rect)/2.f;
             
             // transform absolute - due to user space
             CGContextConcatCTM(ctx, absoluteTransform);
@@ -195,8 +194,8 @@
             CGGradientDrawingOptions options = kCGGradientDrawsBeforeStartLocation|
             kCGGradientDrawsAfterEndLocation;
             CGContextDrawRadialGradient(ctx, gradient,
-                                        gradientEndPoint, focalRadius, gradientStartPoint,
-                                        radius, options);
+                                        gradientEndPoint, focalRadius / val, gradientStartPoint,
+                                        radius / val, options);
             CGGradientRelease(gradient);
         } else {
             // draw the background
